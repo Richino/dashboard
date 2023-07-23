@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import { BiChevronRight } from "react-icons/bi";
 import nprogress from "nprogress";
 import { useEffect, useState } from "react";
-import Info from "@/components/settings/info";
+import Info from "@/components/settings/profile";
 import Language from "@/components/settings/language";
 import Notification from "@/components/settings/notifications";
 import Password from "@/components/settings/password";
