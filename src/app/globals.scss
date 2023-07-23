@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+	overflow: hidden;
+	touch-action: manipulation;
+}
+
+html.dark {
+	::-webkit-scrollbar-track {
+		background: #262626;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #525252;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: #6e6e6e;
+	}
+
+	.circle {
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		border: 3px solid #d4d4d4;
+		border-top: 3px solid #1d4ed8;
+		animation: spin 1s linear infinite;
+	}
+}
+
+.circle {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: 3px solid #e5e5e5;
+	border-top: 3px solid #1d4ed8;
+	animation: spin 1s linear infinite;
+}
+
+#nprogress .bar {
+	background: #1d4ed8 !important;
+	height: 3px !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	appearance: none;
+	margin: 0;
+}
+
+input,
+textarea {
+	font-size: 16px;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.anim {
+	transition: margin 300ms;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background: #f2f2f2;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #bdbdbd;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #6e6e6e;
+}
+.recharts-bar-rectangle:hover {
+	opacity: 0.2; /* Adjust the value as per your preference */
+}
+
+@layer components {
+	//custom
+	.msg {
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+	}
+
+	.input {
+		box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	}
+
+	.shadow-container {
+		@apply shadow-[rgba(149,157,165,0.2)_0px_8px_24px];
+	}
+
+	//side nav
+	.side-nav-container {
+		@apply absolute  z-20 h-[100svh]  w-64 flex-col justify-between border-r border-neutral-200 bg-white p-5 transition-all duration-300 dark:border-neutral-800 tablet:static tablet:ml-0 tablet:flex;
+	}
+
+	.side-nav-button-container {
+		@apply flex flex-col gap-2;
+	}
+
+	.nav-logo-container {
+		@apply flex items-center gap-2 pb-10;
+	}
+
+	.side-nav-logo {
+		@apply text-base font-bold;
+	}
+
+	.side-nav-button {
+		@apply flex w-full items-center gap-4 rounded-md p-3 text-neutral-600 transition-colors dark:text-neutral-400;
+	}
+
+	.side-nav-button-active {
+		@apply flex w-full items-center gap-4 rounded-md bg-blue-700 p-3 text-neutral-50 transition-colors;
+	}
+
+	.side-nav-user-title {
+		@apply p-2  text-xs text-neutral-500;
+	}
+
+	.logout {
+		@apply bottom-5  flex w-full items-center gap-4 rounded-md p-3 text-red-600 transition-colors;
+	}
+
+	//top nav
+	.top-nav-container {
+		@apply top-0 z-10 flex items-center justify-between gap-2 border-b border-neutral-200 bg-white p-2 px-5 dark:border-neutral-800 dark:bg-neutral-950;
+	}
+
+	.modal {
+		@apply fixed left-0 top-0  z-30 h-[100svh] w-full bg-black/60 transition-opacity duration-300;
+	}
+
+	.top-nav-left-container {
+		@apply flex items-center gap-2 text-neutral-400;
+	}
+
+	.top-nav-hamburger {
+		@apply grid h-9 w-9  min-w-[36px] place-items-center rounded border  border-[#EDEDED] bg-neutral-50 text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900 laptop-sm:hidden;
+	}
+
+	.top-nav-input-container {
+		@apply flex items-center gap-2 rounded border p-2 text-neutral-400 dark:border-neutral-800;
+	}
+
+	.top-nav-input {
+		@apply w-full shrink text-neutral-800 placeholder-neutral-400 outline-none focus:outline-none;
+	}
+
+	.top-nav-right-container {
+		@apply flex min-w-[80px] items-center justify-between gap-2 laptop-sm:gap-5;
+	}
+}
