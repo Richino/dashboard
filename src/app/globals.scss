@@ -70,6 +70,36 @@ textarea {
 	transition: margin 300ms;
 }
 
+.seven-day-calendar-container {
+	font-family: Arial, sans-serif;
+	margin: 20px auto;
+	width: 300px;
+}
+
+.react-datepicker {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.react-datepicker__header {
+	background-color: #f0f0f0;
+}
+
+.react-datepicker__day--selected {
+	background-color: #007bff;
+	color: #fff;
+}
+
+.react-datepicker__day--keyboard-selected {
+	background-color: #007bff;
+	color: #fff;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected:hover {
+	background-color: #0056b3;
+}
+
 ::-webkit-scrollbar {
 	width: 6px;
 	height: 6px;
@@ -88,6 +118,12 @@ textarea {
 }
 .recharts-bar-rectangle:hover {
 	opacity: 0.2; /* Adjust the value as per your preference */
+}
+
+.grid-container {
+	display: grid;
+	grid-template-rows: repeat(32, 1fr); /* Creates 32 rows with equal height */
+	grid-gap: 5px; /* You can adjust this to add space between rows if desired */
 }
 
 @layer components {
