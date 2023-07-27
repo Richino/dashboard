@@ -62,7 +62,7 @@ export default function SideNav() {
 	}
 	return (
 		<div
-			className={`anim absolute z-40 flex h-[100svh] w-64 flex-col justify-between border-r border-neutral-200 bg-white p-5 duration-300 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 laptop-sm:static laptop-sm:ml-0 laptop-sm:border-dashed  
+			className={`anim absolute z-40 flex h-[100svh] w-64 flex-col justify-between border-r border-neutral-200 bg-white p-5 duration-300 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 laptop-sm:static laptop-sm:ml-0  
          ${width !== null && width <= 1024 ? `${open ? "ml-0 shadow-2xl" : "-ml-64"}` : "-ml-64"}`}>
 			<div className="side-nav-button-container overflow-y-auto">
 				<div className="nav-logo-container">
