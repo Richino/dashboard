@@ -13,3 +13,37 @@
       <Users />
    </div>
 </main>*/}
+
+
+/*if (schedule2[0].tasks[index].start === index) {
+   /*const elements = Array.from({ length: schedule2[0].tasks[index].span }).map((_, index2) => {
+      indexx++;
+      return (
+         <div
+            key={`${index}-inner-${index2}`}
+            className={`h-[60px] max-h-[60px] min-w-[223.69px] border-b px-5 py-2 dark:border-neutral-800`}>
+            span
+         </div>
+      );
+   });
+   return (
+      <>
+         <div key={index} className={`h-[60px] max-h-[60px] min-w-[223.69px] border-b px-5 py-2 dark:border-neutral-800 row-span-5`}>
+            {schedule2[0].tasks[index].task}
+         </div>
+         {elements}
+      </>
+   );
+   return (
+      <div key={index} className={`h-[60px] max-h-[60px] min-w-[223.69px] border-b px-5 py-2 dark:border-neutral-800`}>
+         {schedule2[0].tasks[index].task}
+      </div>
+   )
+} else {
+
+   return (
+      <div key={index} className={`h-[60px] max-h-[60px] min-w-[223.69px] border-b px-5 py-2 dark:border-neutral-800`}>
+         
+      </div>
+   );
+}*/
