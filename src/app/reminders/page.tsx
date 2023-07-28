@@ -211,6 +211,15 @@ const schedule2 = [
 		tasks: [],
 	},
 ];
+
+const updatedSchedule = schedule2.map((day) => ({
+	...day,
+	tasks: day.tasks.map((task) => ({
+		...task,
+		start: task.start + 1,
+	})),
+}));
+
 var currentDate = new Date();
 var currentDayOfWeek = currentDate.getDay();
 var firstDayOfWeek = new Date(currentDate);
@@ -218,16 +227,24 @@ firstDayOfWeek.setDate(currentDate.getDate() - currentDayOfWeek);
 
 var next7Days: any = [];
 const symbol = ["S", "M", "T", "W", "T", "F", "S"];
+const symbol2 = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 for (var i = 0; i < 7; i++) {
 	var nextDay = new Date(firstDayOfWeek);
 	nextDay.setDate(firstDayOfWeek.getDate() + i);
 	var dayNumber = nextDay.getDate();
-	next7Days.push({ day: symbol[i], date: dayNumber });
+	next7Days.push({ day: symbol[i], day2: symbol2[i], date: dayNumber });
 }
+
+const today = new Date();
+
+// Get the day, month, and year components from the Date object
+const dayz = today.getDate();
+const month = today.getMonth() + 1; // Months are zero-indexed, so we add 1 to get the correct month
+const year = today.getFullYear();
 
 export default function Page() {
 	const [day, setDay] = useState(currentDayOfWeek);
-	const [length, setLength] = useState(0);
+	const [isFireFox, setIsFireFox] = useState(false);
 	const path = usePathname();
 	const ref = useRef<HTMLDivElement>(null);
 	useEffect(() => {
@@ -235,13 +252,18 @@ export default function Page() {
 	}, [path]);
 
 	function getLength(col: number) {
-		let sum = 36;
+		let sum = 37;
 		for (let i = 0; i < schedule2[col].tasks.length; i++) {
 			if (schedule2[col].tasks[i].span != 0) sum -= schedule2[col].tasks[i].span - 1;
 		}
-		console.log(sum);
 		return sum;
 	}
+
+	
+
+	useEffect(() => {
+		if (typeof navigator !== undefined && navigator.userAgent.indexOf("Firefox") != -1) setIsFireFox(true);
+	}, []);
 
 	return (
 		<main className="h-[calc(100svh-55px)] flex-col overflow-hidden bg-white dark:bg-neutral-950 dark:text-neutral-50">
@@ -249,22 +271,28 @@ export default function Page() {
 				<div className="text-2xl font-semibold ">Today</div>
 			</div>
 			<div className="border-b border-dashed bg-white  p-5 px-5 py-2 dark:border-neutral-800 dark:bg-neutral-950 laptop-sm:dark:bg-neutral-950">
-				<span>July 24 2023</span>
+				<span>{`${month}/${dayz}/${year}`}</span>
 			</div>
-			<div className="flex justify-between border-b px-3 py-5 dark:border-neutral-800 laptop-sm:grid laptop-sm:grid-cols-7 laptop-sm:pl-[130px]">
+			<div
+				className="flex justify-between border-b py-5 dark:border-neutral-800 laptop-sm:grid laptop-sm:grid-cols-8 laptop-sm:py-0 "
+				style={{ gridTemplateColumns: "110px repeat(7, 1fr) 7px" }}>
+				<div className="h-full w-10 "></div>
 				{next7Days.map((key: any, index: number) => (
-					<div key={index} className="flex flex-col gap-3 ">
-						<div className="flex h-10 w-10 items-center justify-center">{key.day}</div>
+					<div key={index} className=" flex flex-col items-center gap-3 laptop-sm:gap-0  laptop-sm:border-l dark:laptop-sm:border-neutral-800">
+						<div className="flex h-10 w-10 items-center justify-center laptop-sm:hidden">{key.day}</div>
+						<div className="hidden h-10  items-center justify-center text-xl laptop-sm:flex ">{key.day2}</div>
 						<button
-							className={`${index === day && "rounded-full bg-blue-700 text-white"} flex h-10 w-10 items-center justify-center hover:cursor-pointer `}
+							className={`${
+								index === day && "rounded-full bg-blue-700 text-white laptop-sm:bg-transparent"
+							} flex h-10 w-10 items-center justify-center hover:cursor-pointer laptop-sm:hover:cursor-default `}
 							onClick={() => setDay(index)}>
 							{key.date}
 						</button>
 					</div>
 				))}
 			</div>
-			<div className="relative h-[calc(100%-(+133px+37px+73px))] overflow-y-auto ">
-				<div className="hidden  laptop-sm:flex">
+			<div className="relative h-[calc(100%-(+133px+37px+22px))] overflow-y-auto ">
+				<div className="hidden  w-full text-white  laptop-sm:grid" style={{ gridTemplateColumns: `111px repeat(7, 1fr)  ${isFireFox ? "6px" : ""}` }}>
 					<div className="flex flex-col">
 						{time.map((timeKey: string, timeIndex: number) => (
 							<div key={timeIndex} className="flex  border-b border-r dark:border-neutral-800">
@@ -272,38 +300,44 @@ export default function Page() {
 							</div>
 						))}
 					</div>
-					<div className="grid grid-cols-7 text-white">
-						{Array.from({ length: 7 }).map((_, col: number) => {
-							return (
-								<div ref={ref} id="myDiv" className="grid grid-rows-layout border-b border-r dark:border-neutral-800">
-									{Array.from({ length: getLength(col) }).map((_, index) => {
-										if (index < schedule2[col].tasks.length && schedule2[col].tasks.length !== 0) {
-											let startRow = schedule2[col].tasks[index].start;
-											let spanRows = schedule2[col].tasks[index].span;
-											return (
+					{Array.from({ length: 7 }).map((_, col: number) => {
+						return (
+							<div ref={ref} id="myDiv" className="grid grid-rows-layout  border-r dark:border-neutral-800 ">
+								{Array.from({ length: getLength(col) }).map((_, row) => {
+									if (row < schedule2[col].tasks.length && schedule2[col].tasks.length !== 0) {
+										let startRow = schedule2[col].tasks[row].start;
+										let spanRows = schedule2[col].tasks[row].span;
+										return (
+											<div
+												key={row}
+												className={` h-full  truncate border-b p-2  line-clamp-1 hover:cursor-pointer hover:bg-neutral-200 dark:border-neutral-800 dark:hover:bg-neutral-900 `}
+												style={{
+													gridRow: `${startRow} / span ${spanRows}`,
+												}}>
 												<div
-													key={index}
-													className={`  border-b p-2 text-sm  dark:border-neutral-800 `}
-													style={{
-														gridRow: `${startRow} / span ${spanRows}`,
-													}}>
-													<div className={`h-full px-5 py-2 rounded dark:${taskColorsDark[schedule2[col].tasks[index].task]} ${
-														taskColors[schedule2[col].tasks[index].task]
+													className={`h-full rounded-md px-2 py-1 dark:${taskColorsDark[schedule2[col].tasks[row].task]} ${
+														taskColors[schedule2[col].tasks[row].task]
 													}`}>
-														<div>{schedule2[col].tasks[index].task}</div>
-														<div className="text-xs">{`${schedule2[col].tasks[index].from} - ${schedule2[col].tasks[index].to}`}</div>
-													</div>
+													<p className=" truncate ">{schedule2[col].tasks[row].task}</p>
+													<p className="truncate text-xs">{`${schedule2[col].tasks[row].from} - ${schedule2[col].tasks[row].to}`}</p>
 												</div>
-											);
-										} else {
-											return <div key={index} className={` overflow-hidden border-b px-5 py-2 line-clamp-1 dark:border-neutral-800 hover:bg-neutral-200 hover:cursor-pointer dark:hover:bg-neutral-800`}></div>;
-										}
-									})}
-								</div>
-							);
-						})}
-					</div>
+											</div>
+										);
+									} else {
+										return (
+											<div
+												key={row}
+												className={` h-full  truncate border-b p-2  line-clamp-1 hover:cursor-pointer hover:bg-neutral-200 dark:border-neutral-800 dark:hover:bg-neutral-900 `}>
+												<div className={`h-full rounded-md px-2 py-1 `}></div>
+											</div>
+										);
+									}
+								})}
+							</div>
+						);
+					})}
 				</div>
+
 				<div
 					className={`fixed mx-10  flex h-full items-center border-l p-5 dark:border-neutral-800 ${schedule[day].tasks.length === 0 && "hidden"} laptop-sm:hidden`}></div>
 				<div className={`h-[72px] ${schedule[day].tasks.length === 0 && "hidden"} laptop-sm:hidden`}></div>
