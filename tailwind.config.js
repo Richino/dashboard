@@ -11,7 +11,7 @@ module.exports = {
 				"shadow-container": "box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px",
 			},
 			gridTemplateRows: {
-				layout: "repeat(32, minmax(0, 80px))",
+				layout: "repeat(36, minmax(0, 80px))",
 			},
 			gridRowStart: {
 				8: "8",
