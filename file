@@ -1,49 +1,46 @@
-{/*<main className="text-neutral-800 flex flex-col gap-5  p-5 overflow-y-auto h-[calc(100%-55px)] dark:text-neutral-400">
-   <div className="font-semibold text-2xl">Dashboard</div>
-   <div className="grid grid-cols-1 gap-5 laptop-sm:grid-cols-2 laptop-lg:grid-cols-4">
-      <Card title="Update" summary={"Sales revenue increased by 20% in 1 week"} summary2="See analytics" button={true} />
-      <Card title="Net Revenue" summary={12300} summary2="5% vs last month" />
-      <Card title="Weekly Sales" summary={2400} summary2="71% of goal" />
-      <Card title="Page Visits" summary={423} summary2="22% higher" pages={true} />
-   </div>
-   <div className="grid grid-cols-1 gap-5 laptop-sm:grid-cols-2 laptop-lg:grid-cols-4">
-      <Chart />
-      <Reminders />
-      <Message />
-      <Users />
-   </div>
-</main>*/}
-
-
-/*if (schedule2[0].tasks[index].start === index) {
-   /*const elements = Array.from({ length: schedule2[0].tasks[index].span }).map((_, index2) => {
-      indexx++;
-      return (
+if (row < schedule2[col].tasks.length && schedule2[col].tasks.length !== 0) {
+   // Existing tasks
+   const startRow = schedule2[col].tasks[row].start;
+   const spanRows = schedule2[col].tasks[row].span;
+   return (
+      <div
+         key={`${col}-${row}`}
+         className={`h-full truncate border-b border-neutral-200 p-4 py-3 line-clamp-1 hover:cursor-pointer hover:bg-neutral-100 dark:border-neutral-800 dark:hover:bg-neutral-900`}
+         style={{ gridRow: `${startRow} / span ${spanRows}` }}>
          <div
-            key={`${index}-inner-${index2}`}
-            className={`h-[60px] max-h-[60px] min-w-[223.69px] border-b px-5 py-2 dark:border-neutral-800`}>
-            span
+            className={`h-full rounded-md px-2 py-1 ${taskColors[schedule2[col].tasks[row].task][0]} ${taskColors[schedule2[col].tasks[row].task][1]}`}>
+            <p className="truncate">{schedule2[col].tasks[row].task}</p>
+            <p className="truncate text-xs ">{`${schedule2[col].tasks[row].from} - ${schedule2[col].tasks[row].to}`}</p>
          </div>
-      );
-   });
-   return (
-      <>
-         <div key={index} className={`h-[60px] max-h-[60px] min-w-[223.69px] border-b px-5 py-2 dark:border-neutral-800 row-span-5`}>
-            {schedule2[0].tasks[index].task}
-         </div>
-         {elements}
-      </>
-   );
-   return (
-      <div key={index} className={`h-[60px] max-h-[60px] min-w-[223.69px] border-b px-5 py-2 dark:border-neutral-800`}>
-         {schedule2[0].tasks[index].task}
       </div>
-   )
+   );
 } else {
+   // Empty cells
+   //make a condition oif it already happened
 
-   return (
-      <div key={index} className={`h-[60px] max-h-[60px] min-w-[223.69px] border-b px-5 py-2 dark:border-neutral-800`}>
-         
+   elements.push(
+      <div
+         onClick={(event) => handleAddTask(row, col, event)}
+         key={`${col}-${row}`}
+         data-index={row + 1}
+         className={`${
+            row < getRowLength(col) - 1 && "border-b"
+         } h-full truncate ${col}-${row} border-neutral-200 p-2 line-clamp-1 hover:cursor-pointer hover:bg-neutral-100 dark:border-neutral-800 dark:hover:bg-neutral-900`}>
+         <div className={`h-full rounded-md px-2 py-1 text-black`}>{row + 1}</div>
       </div>
    );
-}*/
+   if (row === 35) {
+      let length = 0;
+      schedule2[col].tasks.map((key: any, index: any) => {
+         length += key.span;
+      });
+      console.log(length);
+      elementsCol.push(elements);
+      if (elements.length != 36) elements.length = 36 - length;
+
+      setEmptyGrids((prevEmptyGrids) => [...prevEmptyGrids, elements]);
+      console.log(elementsCol);
+
+      return elementsCol[col];
+   }
+}
