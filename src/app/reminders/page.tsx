@@ -970,7 +970,7 @@ export default function Page() {
 											className={`${row + 1} ${
 												row < 35 && "border-b"
 											} h-full truncate p-2  line-clamp-1 hover:cursor-pointer  hover:bg-neutral-200 dark:border-neutral-800 dark:hover:bg-neutral-900`}>
-											<div className={`h-full rounded-md px-2 py-1 hover:cursor-pointer `}>{row + 1}</div>
+											<div className={`h-full rounded-md px-2 py-1 hover:cursor-pointer `}></div>
 										</div>
 									);
 								}

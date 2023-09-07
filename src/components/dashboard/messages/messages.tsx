@@ -5,7 +5,7 @@ import { RootState } from "@/redux/store";
 
 export default function Messages(props: any) {
 	const dispatch = useDispatch();
-	const isOpen = useSelector((state: RootState) => state.navbar.value.open);
+	
 	return (
 		<div  onClick={() => dispatch(open())} className="flex-start  flex flex-row items-center gap-2 p-5 py-2 hover:cursor-pointer laptop-sm:hover:bg-neutral-200 dark:laptop-sm:hover:bg-neutral-800">
 			<div className="relative h-10  w-10 shrink-0 text">

@@ -1,46 +1,832 @@
-if (row < schedule2[col].tasks.length && schedule2[col].tasks.length !== 0) {
-   // Existing tasks
-   const startRow = schedule2[col].tasks[row].start;
-   const spanRows = schedule2[col].tasks[row].span;
-   return (
-      <div
-         key={`${col}-${row}`}
-         className={`h-full truncate border-b border-neutral-200 p-4 py-3 line-clamp-1 hover:cursor-pointer hover:bg-neutral-100 dark:border-neutral-800 dark:hover:bg-neutral-900`}
-         style={{ gridRow: `${startRow} / span ${spanRows}` }}>
-         <div
-            className={`h-full rounded-md px-2 py-1 ${taskColors[schedule2[col].tasks[row].task][0]} ${taskColors[schedule2[col].tasks[row].task][1]}`}>
-            <p className="truncate">{schedule2[col].tasks[row].task}</p>
-            <p className="truncate text-xs ">{`${schedule2[col].tasks[row].from} - ${schedule2[col].tasks[row].to}`}</p>
-         </div>
-      </div>
-   );
-} else {
-   // Empty cells
-   //make a condition oif it already happened
+"use client";
+import nprogress from "nprogress";
+import path from "path";
+import { useEffect, useState } from "react";
+const columns = [
+	{
+		column: "To Do",
+		tasks: [
+			{
+				id: 1,
+				title: "Create Login Page",
+				description: "Design and implement the login page",
+				status: "to_do",
+				bgColor: "#FEF2F2",
+				textColor: "#F87171",
+				role: "UI/UX Designer",
+			},
+			{
+				id: 2,
+				title: "Add User Registration",
+				description: "Create user registration functionality",
+				status: "to_do",
+				bgColor: "#FFF7ED",
+				textColor: "#FB923C",
+				role: "Frontend Developer",
+			},
+			{
+				id: 7,
+				title: "Setup Project Skeleton",
+				description: "Initialize project with necessary files and folders",
+				status: "to_do",
+				bgColor: "#ECFEFF",
+				textColor: "#22D3EE",
+				role: "Backend Developer",
+			},
+		],
+	},
+	{
+		column: "In Progress",
+		tasks: [
+			{
+				id: 3,
+				title: "Implement API Calls",
+				description: "Set up API calls for fetching and updating data",
+				status: "in_progress",
+				bgColor: "#ECFEFF",
+				textColor: "#22D3EE",
+				role: "Backend Developer",
+			},
+			{
+				id: 4,
+				title: "Style Dashboard Components",
+				description: "Apply CSS styles to dashboard components",
+				status: "in_progress",
+				bgColor: "#FEF2F2",
+				textColor: "#F87171",
+				role: "UI/UX Designer",
+			},
+			{
+				id: 8,
+				title: "Optimize Performance",
+				description: "Identify and fix performance bottlenecks",
+				status: "in_progress",
+				bgColor: "#ECFEFF",
+				textColor: "#22D3EE",
+				role: "Backend Developer",
+			},
+		],
+	},
+	{
+		column: "Review",
+		tasks: [
+			{
+				id: 9,
+				title: "Code Review",
+				description: "Review and refactor existing codebase",
+				status: "review",
+				bgColor: "#ECFEFF",
+				textColor: "#22D3EE",
+				role: "Backend Developer",
+			},
+			{
+				id: 10,
+				title: "UI/UX Testing",
+				description: "Test user interface for usability and design consistency",
+				status: "review",
+				bgColor: "#FEF2F2",
+				textColor: "#F87171",
+				role: "UI/UX Designer",
+			},
+		],
+	},
+	{
+		column: "Completed",
+		tasks: [
+			{
+				id: 5,
+				title: "Unit Testing",
+				description: "Write unit tests for critical components",
+				status: "done",
+				bgColor: "#fff7ed",
+				textColor: "#f59e0b",
+				role: "QA Engineer",
+			},
+			{
+				id: 6,
+				title: "Integration Testing",
+				description: "Perform integration tests with backend services",
+				status: "done",
+				bgColor: "#ecfdf5",
+				textColor: "#22c55e",
+				role: "QA Engineer",
+			},
+			{
+				id: 11,
+				title: "Deployment",
+				description: "Deploy the project to production server",
+				status: "done",
+				bgColor: "#f0f9ff",
+				textColor: "#0ea5e9",
+				role: "DevOps Engineer",
+			},
+		],
+	},
+];
+export default function Page() {
+	const [drag, setDrag] = useState<boolean>(false);
+	const [animated, setAnimated] = useState<boolean>(false);
+	const [taskIndex, setTaskIndex] = useState(0);
+	const [divElement, setDivElemnt] = useState<HTMLElement | null>(null);
+	const [colElement, setColElemnt] = useState<HTMLDivElement | null>(null);
+	const [dragDiv, setDragDiv] = useState<{ index: number; x: number; y: number; height: number; width: number; originX: number; originY: number }>({
+		x: 0,
+		y: 0,
+		height: 0,
+		width: 0,
+		originX: 0,
+		originY: 0,
+		index: 0,
+	});
+	const [isStillOver, setIsStillOver] = useState(false);
+	const [isStillUnder, setIsStillUnder] = useState(false);
+	const [overCol, setOverCol] = useState(false);
+	useEffect(() => {
+		nprogress.done();
+	}, [path]);
 
-   elements.push(
-      <div
-         onClick={(event) => handleAddTask(row, col, event)}
-         key={`${col}-${row}`}
-         data-index={row + 1}
-         className={`${
-            row < getRowLength(col) - 1 && "border-b"
-         } h-full truncate ${col}-${row} border-neutral-200 p-2 line-clamp-1 hover:cursor-pointer hover:bg-neutral-100 dark:border-neutral-800 dark:hover:bg-neutral-900`}>
-         <div className={`h-full rounded-md px-2 py-1 text-black`}>{row + 1}</div>
-      </div>
-   );
-   if (row === 35) {
-      let length = 0;
-      schedule2[col].tasks.map((key: any, index: any) => {
-         length += key.span;
-      });
-      console.log(length);
-      elementsCol.push(elements);
-      if (elements.length != 36) elements.length = 36 - length;
+	useEffect(() => {
+		let created = false;
+		const handleMouseDown = (event: any) => {
+			setDrag(true);
+			let element = event.target as HTMLElement | null;
+			while (element && !element.classList.contains("task-item")) {
+				element = element.parentElement;
+			}
 
-      setEmptyGrids((prevEmptyGrids) => [...prevEmptyGrids, elements]);
-      console.log(elementsCol);
+			if (element) {
+				const col = element?.parentElement;
+				element.id = "movable";
 
-      return elementsCol[col];
-   }
+				setDragDiv({
+					height: element.offsetHeight,
+					width: element.offsetWidth,
+					x: event.clientX - element.getBoundingClientRect().left,
+					y: event.clientY - element.getBoundingClientRect().top,
+					originX: element.getBoundingClientRect().left,
+					originY: element.getBoundingClientRect().top,
+					index: col ? Array.from(col.children).indexOf(element) : -1,
+				});
+				setDivElemnt(element);
+			}
+		};
+
+		const handleMouseMove = (event: any) => {
+			if (!drag) return;
+			event.preventDefault();
+			const element = document.getElementById("movable");
+
+			if (element) {
+				const column = element.parentElement;
+				if (column && !created) {
+					const index = Array.from(column.children).indexOf(element);
+					const div = document.createElement("div");
+					div.style.height = `${dragDiv.height}px`;
+					div.style.marginBottom = "20px";
+					div.style.transition = "height 0.3s ease";
+					div.classList.add("placeholder");
+					column.insertBefore(div, column.children[index]);
+					created = true;
+				}
+				const X = event.clientX - dragDiv.x;
+				const Y = event.clientY - dragDiv.y;
+				element.style.position = "absolute";
+				element.style.left = `${X}px`;
+				element.style.top = `${Y}px`;
+				element.style.width = `${dragDiv.width}px`;
+				element.style.zIndex = "2";
+				element.style.pointerEvents = "none";
+				document.body.style.cursor = "grabbing";
+			}
+		};
+
+		const handleMouseUp = (event: any) => {
+			setAnimated(true);
+			setDrag(false);
+			const element = document.getElementById("movable");
+			const clonedElement = element?.cloneNode(true) as HTMLElement;
+
+			const column = element?.parentElement;
+			if (clonedElement && colElement && element && column) {
+				clonedElement.style.position = "static";
+				const ANIMATION_TIME = 0;
+				const index = Array.from(colElement.children).indexOf(element);
+				colElement.insertBefore(clonedElement, colElement.children[taskIndex]);
+				/*const div = document.createElement("div");
+				div.style.height = `0px`;
+				div.style.marginBottom = "20px";
+				div.style.transition = `height ${ANIMATION_TIME}ms ease`;
+				div.classList.add("placeholder");
+				column.insertBefore(div, column.children[index]);
+				div.getBoundingClientRect();
+				div.style.height = `${dragDiv.height}px`;*/
+				for (let i = 0; i < colElement.children.length; i++) {
+					const childElement = colElement.children[i];
+					if (childElement.classList.contains("placeholder")) {
+						// Perform actions on the child element with the class "placeholder"
+						// In your case, this is where you might finalize the drop action
+					}
+				}
+
+
+				const animation = [{ top: `${dragDiv.originY}px`, left: `${dragDiv.originX}px` }];
+				const timing = {
+					duration: ANIMATION_TIME,
+					iterations: 1,
+					easing: "cubic-bezier(0.42, 0, 1, 1)",
+				};
+				clonedElement.removeAttribute("id");
+				clonedElement.style.cursor = "grab";
+				clonedElement.style.pointerEvents = "auto";
+				document.body.style.cursor = "auto";
+				//clonedElement.animate(animation, timing);
+				element.remove();
+
+				setTimeout(() => {
+					clonedElement.style.position = "static";
+					clonedElement.style.zIndex = "0";
+					const placeholder = document.querySelectorAll(".placeholder");
+					if (placeholder) {
+						placeholder.forEach((element) => {
+							element.remove();
+						});
+					}
+					created = false;
+					setAnimated(false);
+				}, ANIMATION_TIME);
+			}
+		};
+		document.addEventListener("mousedown", handleMouseDown);
+		document.addEventListener("mousemove", handleMouseMove);
+		document.addEventListener("mouseup", handleMouseUp);
+
+		return () => {
+			document.removeEventListener("mousedown", handleMouseDown);
+			document.removeEventListener("mousemove", handleMouseMove);
+			document.removeEventListener("mouseup", handleMouseUp);
+		};
+	}, [drag, colElement]);
+
+	const handleCardHover = (event: React.MouseEvent<HTMLDivElement>) => {
+		if (!drag) return;
+		const element = event.currentTarget;
+
+		const rect = element.getBoundingClientRect();
+		const middleY = rect.top + rect.height / 2;
+		const over = event.clientY < middleY;
+		const parentElement = element.parentElement;
+		const taskIndex = parentElement ? Array.from(parentElement.children).indexOf(element) : -1;
+		if (taskIndex !== -1) {
+			setTaskIndex(taskIndex);
+			if (over) {
+				if (isStillOver) return;
+				createDiv(taskIndex, parentElement);
+				setIsStillOver(true);
+				setIsStillUnder(false);
+			} else {
+				if (isStillUnder === true) return;
+				createDiv(taskIndex + 1, parentElement);
+				setIsStillUnder(true);
+				setIsStillOver(false);
+			}
+		}
+	};
+
+	const handleColHover = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		setOverCol(true);
+		if (animated) return;
+		const targetElement = event.currentTarget as HTMLDivElement;
+		setColElemnt(targetElement);
+	};
+
+	const createDiv = async (index: number, parent: HTMLElement | null) => {
+		handleColOut();
+		const div = document.createElement("div");
+		div.style.height = "0px";
+		div.style.marginBottom = "20px";
+		div.style.transition = "height 0.3s ease";
+		div.classList.add("placeholder");
+		div.style.width = `${dragDiv.width}px`;
+		parent?.insertBefore(div, parent.children[index]);
+		div.getBoundingClientRect();
+		div.style.height = `${dragDiv.height}px`;
+	};
+
+	const handleColOut2 = () => {
+		setIsStillOver(false);
+		setIsStillUnder(false);
+		setOverCol(false);
+		handleColOut();
+	};
+	const handleColOut = () => {
+		if (animated) return;
+		const placeholders = document.querySelectorAll<HTMLElement>(".placeholder");
+		if (placeholders) {
+			placeholders.forEach((element, index) => {
+				element.style.marginBottom = "0px";
+				element.style.height = "0px";
+				element.addEventListener(
+					"transitionend",
+					() => {
+						element.remove();
+					},
+					{ once: true }
+				);
+			});
+		}
+	};
+
+	return (
+		<div className="flex w-full shrink-0 flex-col items-center  overflow-y-scroll p-5 laptop-sm:h-[calc(100%-55px)]">
+			<div className="w-[80%]  space-y-5 ">
+				<div className="flex justify-between">
+					<div className="text-2xl">Board</div>
+					<button className="rounded-md bg-blue-700 p-2 px-3  text-xs text-white ">+ Create Task</button>
+				</div>
+				<div className="grid h-full grid-cols-4 gap-5 ">
+					{columns.map((col, colIndex) => (
+						<div onMouseLeave={handleColOut2} onMouseEnter={handleColHover} id={`col-${colIndex}`} key={colIndex} className="col flex h-full flex-col items-center  ">
+							<div className="mb-5 w-full rounded-md border border-neutral-200 bg-white p-4 shadow-sm">
+								<div className="flex items-center justify-between">
+									<div className="text-lg font-semibold">{col.column}</div>
+									{colIndex === 0 && (
+										<button className="rounded border border-blue-700 px-3 py-1 text-xs text-blue-700 transition hover:bg-blue-700 hover:text-white focus:border-blue-300 focus:outline-none focus:ring">
+											Add Task
+										</button>
+									)}
+								</div>
+							</div>
+							{col.tasks.map((task: any, taskIndex) => (
+								<div
+									onMouseOver={handleCardHover}
+									key={taskIndex}
+									style={{ cursor: drag ? "grabbing" : "grab" }}
+									draggable={false}
+									className={`task-item mb-5 min-h-[120px] w-full transform flex-col space-y-5 rounded-md border border-neutral-200 bg-white p-5 shadow-sm transition-transform duration-200`}>
+									<span style={{ color: task.textColor, background: task.bgColor }} className={`rounded-full p-2 px-4 font-medium`}>
+										{task.role}
+									</span>
+									<div className="flex flex-grow flex-col">
+										<span className="text-lg font-medium">{task.title}</span>
+										<div className="mt-2 text-sm text-neutral-500">{task.description}</div>
+									</div>
+								</div>
+							))}
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	);
 }
+
+
+
+
+"use client";
+import nprogress from "nprogress";
+import path from "path";
+import { useEffect, useRef, useState } from "react";
+const columns = [
+	{
+		column: "To Do",
+		tasks: [
+			{
+				id: 1,
+				title: "Create Login Page",
+				description: "Design and implement the login page",
+				status: "to_do",
+				bgColor: "#FEF2F2",
+				textColor: "#F87171",
+				role: "UI/UX Designer",
+			},
+			{
+				id: 2,
+				title: "Add User Registration",
+				description: "Create user registration functionality",
+				status: "to_do",
+				bgColor: "#FFF7ED",
+				textColor: "#FB923C",
+				role: "Frontend Developer",
+			},
+			{
+				id: 7,
+				title: "Setup Project Skeleton",
+				description: "Initialize project with necessary files and folders",
+				status: "to_do",
+				bgColor: "#ECFEFF",
+				textColor: "#22D3EE",
+				role: "Backend Developer",
+			},
+		],
+	},
+	{
+		column: "In Progress",
+		tasks: [
+			{
+				id: 3,
+				title: "Implement API Calls",
+				description: "Set up API calls for fetching and updating data",
+				status: "in_progress",
+				bgColor: "#ECFEFF",
+				textColor: "#22D3EE",
+				role: "Backend Developer",
+			},
+			{
+				id: 4,
+				title: "Style Dashboard Components",
+				description: "Apply CSS styles to dashboard components",
+				status: "in_progress",
+				bgColor: "#FEF2F2",
+				textColor: "#F87171",
+				role: "UI/UX Designer",
+			},
+			{
+				id: 8,
+				title: "Optimize Performance",
+				description: "Identify and fix performance bottlenecks",
+				status: "in_progress",
+				bgColor: "#ECFEFF",
+				textColor: "#22D3EE",
+				role: "Backend Developer",
+			},
+		],
+	},
+	{
+		column: "Review",
+		tasks: [
+			{
+				id: 9,
+				title: "Code Review",
+				description: "Review and refactor existing codebase",
+				status: "review",
+				bgColor: "#ECFEFF",
+				textColor: "#22D3EE",
+				role: "Backend Developer",
+			},
+			{
+				id: 10,
+				title: "UI/UX Testing",
+				description: "Test user interface for usability and design consistency",
+				status: "review",
+				bgColor: "#FEF2F2",
+				textColor: "#F87171",
+				role: "UI/UX Designer",
+			},
+		],
+	},
+	{
+		column: "Completed",
+		tasks: [
+			{
+				id: 5,
+				title: "Unit Testing",
+				description: "Write unit tests for critical components",
+				status: "done",
+				bgColor: "#fff7ed",
+				textColor: "#f59e0b",
+				role: "QA Engineer",
+			},
+			{
+				id: 6,
+				title: "Integration Testing",
+				description: "Perform integration tests with backend services",
+				status: "done",
+				bgColor: "#ecfdf5",
+				textColor: "#22c55e",
+				role: "QA Engineer",
+			},
+			{
+				id: 11,
+				title: "Deployment",
+				description: "Deploy the project to production server",
+				status: "done",
+				bgColor: "#f0f9ff",
+				textColor: "#0ea5e9",
+				role: "DevOps Engineer",
+			},
+		],
+	},
+];
+export default function Page() {
+	const [state, setState] = useState({ prev: false, next: false });
+	const colOverRef = useRef<boolean>(false);
+	const [isStillOver, setIsStillOver] = useState(false);
+	const [isStillUnder, setIsStillUnder] = useState(false);
+	const [drag, setDrag] = useState<boolean>(false);
+	const column = useRef<HTMLElement | null>(null);
+	const [animated, setAnimated] = useState<boolean>(false);
+	const [mouseOut, setMouseOut] = useState<boolean>(false);
+	const [divElement, setDivElemnt] = useState<HTMLElement | null>(null);
+	const [colElement, setColElemnt] = useState<HTMLDivElement | null>(null);
+	const [dragDiv, setDragDiv] = useState<{ index: number; x: number; y: number; height: number; width: number; originX: number; originY: number }>({
+		x: 0,
+		y: 0,
+		height: 0,
+		width: 0,
+		originX: 0,
+		originY: 0,
+		index: 0,
+	});
+	useEffect(() => {
+		nprogress.done();
+	}, [path]);
+
+	useEffect(() => {
+		let created = false;
+		let shouldHandleMouseMove = true;
+
+		const handleMouseDown = (e: any) => {
+			console.log("mouse down");
+			setDrag(true);
+			let element = e.target as HTMLElement | null;
+			while (element && !element.classList.contains("task-item")) {
+				element = element.parentElement;
+			}
+
+			if (element) {
+				const col = element?.parentElement;
+				element.id = "movable";
+
+				setDragDiv({
+					height: element.offsetHeight,
+					width: element.offsetWidth,
+					x: e.clientX - element.getBoundingClientRect().left,
+					y: e.clientY - element.getBoundingClientRect().top,
+					originX: element.getBoundingClientRect().left,
+					originY: element.getBoundingClientRect().top,
+					index: col ? Array.from(col.children).indexOf(element) : -1,
+				});
+			}
+		};
+
+		const handleMouseMove = (e: any) => {
+			if (!drag) return;
+			if (!shouldHandleMouseMove) return;
+			console.log("mouse move");
+			e.preventDefault();
+			const element = document.getElementById("movable");
+
+			if (element) {
+				const column = element.parentElement;
+				if (column && !created) {
+					console.log(1);
+					const index = Array.from(column.children).indexOf(element);
+					const div = document.createElement("div");
+					div.style.height = `${dragDiv.height}px`;
+					div.style.marginBottom = "20px";
+					div.style.transition = "height 0.3s ease";
+					div.style.border = "1px solid #d4d4d4";
+					div.style.width = `${dragDiv.width}px`;
+					div.style.borderRadius = "6px";
+					div.classList.add("placeholder");
+					column.insertBefore(div, column.children[index]);
+					created = true;
+				}
+				const X = e.clientX - dragDiv.x;
+				const Y = e.clientY - dragDiv.y;
+				element.style.position = "absolute";
+				element.style.left = `${X}px`;
+				element.style.top = `${Y}px`;
+				element.style.width = `${dragDiv.width}px`;
+
+				element.style.zIndex = "2";
+				element.style.pointerEvents = "none";
+				document.body.style.cursor = "grabbing";
+			}
+		};
+
+		const handleMouseUp = (e: MouseEvent) => {
+			console.log("mouse up");
+			shouldHandleMouseMove = false;
+			setDrag(false);
+			setIsStillOver(false);
+			setIsStillUnder(false);
+			setAnimated(true);
+			const element = document.getElementById("movable");
+			const clonedElement = element?.cloneNode(true) as HTMLElement;
+			if (element && clonedElement) {
+				const ANIMATION_TIME = 300;
+				const placeholder = document.querySelectorAll(".placeholder");
+				//console.log(placeholder);
+				const taskIndex = column.current ? Array.from(column.current.children).indexOf(placeholder[0]) : -1;
+				//console.log(colOverRef.current);
+				const top = colOverRef.current ? placeholder[0].getBoundingClientRect().top : dragDiv.originY;
+				const left = colOverRef.current ? placeholder[0].getBoundingClientRect().left : dragDiv.originX;
+				const animation = [{ top: `${top}px`, left: `${left}px` }];
+				const timing = {
+					duration: ANIMATION_TIME,
+					iterations: 1,
+					easing: "cubic-bezier(0.42, 0, 1, 1)",
+				};
+				element.style.transition = `top ${ANIMATION_TIME}ms ease, left ${ANIMATION_TIME}ms ease`;
+				element.style.left = `${left}px`;
+				element.style.top = `${top}px`;
+				setTimeout(() => {
+					element.removeAttribute("id");
+					element.style.removeProperty("transition");
+					element.style.removeProperty("position");
+					element.style.removeProperty("top");
+					element.style.removeProperty("left");
+					element.style.removeProperty("width");
+					element.style.removeProperty("position");
+					element.style.removeProperty("z-index");
+					element.style.removeProperty("pointer-events");
+					document.body.style.cursor = "auto";
+					if (colOverRef.current) {
+						column.current?.insertBefore(element, column.current.children[taskIndex]);
+						//console.log(1);
+					}
+					const placeholder = document.querySelectorAll(".placeholder");
+					if (placeholder) {
+						placeholder.forEach((element) => {
+							element.remove();
+						});
+					}
+					created = false;
+					setAnimated(false);
+					shouldHandleMouseMove = true;
+				}, ANIMATION_TIME);
+			}
+		};
+		document.addEventListener("mousedown", handleMouseDown);
+		document.addEventListener("mousemove", handleMouseMove);
+		document.addEventListener("mouseup", handleMouseUp);
+
+		return () => {
+			document.removeEventListener("mousedown", handleMouseDown);
+			document.removeEventListener("mousemove", handleMouseMove);
+			document.removeEventListener("mouseup", handleMouseUp);
+		};
+	}, [drag]);
+
+	const cardHover = (e: React.MouseEvent<HTMLDivElement>) => {
+		if (!drag) return;
+		const element = e.currentTarget;
+
+		const rect = element.getBoundingClientRect();
+		const middleY = rect.top + rect.height / 2;
+		const over = e.clientY < middleY;
+		const parentElement = element.parentElement;
+		const taskIndex = parentElement ? Array.from(parentElement.children).indexOf(element) : -1;
+		const hasPlaceholder = parentElement && parentElement.querySelector(".placeholder");
+
+		if (taskIndex !== -1) {
+			if (over) {
+				if (isStillOver) {
+					return;
+				} else {
+					if (hasPlaceholder) return;
+					createDiv(taskIndex, parentElement);
+					setIsStillOver(true);
+					setIsStillUnder(false);
+				}
+			} else {
+				if (isStillUnder) {
+					return;
+				} else {
+					if (hasPlaceholder) return;
+					createDiv(taskIndex + 1, parentElement);
+					setIsStillUnder(true);
+					setIsStillOver(false);
+				}
+			}
+		}
+	};
+
+	const createDiv = (index: number, parent: HTMLElement | null) => {
+		console.log("here");
+		deletePlaceHolders();
+		const div = document.createElement("div");
+		div.style.height = "0px";
+		div.style.marginBottom = "20px";
+		div.style.border = "1px solid #d4d4d4";
+		div.style.transition = "height 2s ease";
+		div.style.borderRadius = "6px";
+		div.classList.add("placeholder");
+		div.style.width = `${dragDiv.width}px`;
+		parent?.insertBefore(div, parent.children[index]);
+		div.getBoundingClientRect();
+		div.style.height = `${dragDiv.height}px`;
+	};
+
+	const deletePlaceHolders = () => {
+		const placeholders = document.querySelectorAll<HTMLElement>(".placeholder");
+		if (placeholders) {
+			placeholders.forEach((element, index) => {
+				element.style.height = "0px";
+				element.style.marginBottom = "0px";
+				element.addEventListener("transitionend", () => {
+					element.remove();
+					console.log("jhvkavfkd");
+				});
+				element.getBoundingClientRect();
+			});
+		}
+	};
+
+	const colHover = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		colOverRef.current = true;
+		if (animated) {
+			return;
+		}
+		const targetElement = event.currentTarget as HTMLDivElement;
+		setColElemnt(targetElement);
+		column.current = targetElement;
+	};
+
+	const colHoverOut = () => {
+		deletePlaceHolders();
+		colOverRef.current = false;
+		setIsStillOver(false);
+		setIsStillUnder(false);
+	};
+
+	return (
+		<div className="flex w-full shrink-0 flex-col items-center  overflow-y-scroll p-5 laptop-sm:h-[calc(100%-55px)]">
+			<div className="w-[80%]  space-y-5 ">
+				<div className="flex justify-between">
+					<div className="text-2xl">Board</div>
+					<button className="rounded-md bg-blue-700 p-2 px-3  text-xs text-white ">+ Create Task</button>
+				</div>
+				<div className="grid h-full grid-cols-4 gap-5 ">
+					{columns.map((col, colIndex) => (
+						<div onMouseLeave={colHoverOut} onMouseEnter={colHover} id={`col-${colIndex}`} key={colIndex} className="col  flex h-full flex-col items-center  ">
+							<div className="mb-5 w-full rounded-md border border-neutral-100 bg-white p-4 ">
+								<div className="flex items-center justify-between">
+									<div className="text-lg font-semibold">{col.column}</div>
+									{colIndex === 0 && (
+										<button className="rounded border border-blue-700 px-3 py-1 text-xs text-blue-700 transition hover:bg-blue-700 hover:text-white focus:border-blue-300 focus:outline-none focus:ring">
+											Add Task
+										</button>
+									)}
+								</div>
+							</div>
+							{col.tasks.map((task: any, taskIndex) => (
+								<div
+									onMouseOver={cardHover}
+									onMouseOut={() => {
+										setState({ ...state, next: true });
+									}}
+									key={taskIndex}
+									style={{ cursor: drag ? "grabbing" : "grab" }}
+									draggable={false}
+									className={`task-item mb-5 min-h-[120px] w-full transform flex-col space-y-5 rounded-md border border-neutral-100 bg-white p-5  transition-transform duration-200`}>
+									<span style={{ color: task.textColor, background: task.bgColor }} className={`rounded-full p-2 px-4 font-medium`}>
+										{task.role}
+									</span>
+									<div className="flex flex-grow flex-col">
+										<span className="text-lg font-medium">{task.title}</span>
+										<div className="mt-2 text-sm text-neutral-500">{task.description}</div>
+									</div>
+								</div>
+							))}
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}
+
+
+
+<div className="flex w-full shrink-0 flex-col items-center  overflow-y-scroll p-5 laptop-sm:h-[calc(100%-55px)]">
+			<div className="w-[80%]  space-y-5 ">
+				<div className="flex justify-between">
+					<div className="text-2xl">Board</div>
+					<button className="rounded-md bg-blue-700 p-2 px-3  text-xs text-white ">+ Create Task</button>
+				</div>
+				<div className="grid h-full grid-cols-4 gap-5 ">
+					{columns.map((col, colIndex) => (
+						<div onMouseLeave={colHoverOut} onMouseEnter={colHover} id={`col-${colIndex}`} key={colIndex} className="col flex h-full flex-col items-center border ">
+							<div className="mb-5 w-full rounded-md border border-neutral-100 bg-white p-4 ">
+								<div className="flex items-center justify-between">
+									<div className="text-lg font-semibold">{col.column}</div>
+									{colIndex === 0 && (
+										<button className="rounded border border-blue-700 px-3 py-1 text-xs text-blue-700 transition hover:bg-blue-700 hover:text-white focus:border-blue-300 focus:outline-none focus:ring">
+											Add Task
+										</button>
+									)}
+								</div>
+							</div>
+							{col.tasks.map((task: any, taskIndex) => (
+								<div
+									onMouseOver={cardHover}
+									key={taskIndex}
+									style={{ cursor: drag ? "grabbing" : "grab" }}
+									className={`${taskIndex} task-item mb-5 min-h-[120px] w-full  flex-col space-y-5 rounded-md border border-neutral-100 bg-white p-5 `}>
+									<span style={{ color: task.textColor, background: task.bgColor }} className={`rounded-full p-2 px-4 font-medium`}>
+										{task.role}
+									</span>
+									<div className="flex flex-grow flex-col">
+										<span className="text-lg font-medium">{task.title}</span>
+										<div className="mt-2 text-sm text-neutral-500">{task.description}</div>
+									</div>
+								</div>
+							))}
+						</div>
+					))}
+				</div>
+			</div>
+		</div>

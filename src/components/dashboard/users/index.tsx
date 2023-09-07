@@ -30,20 +30,20 @@ const people = [
 
 export default function Users() {
 	return (
-		<div className=" rounded-md border border-neutral-200 bg-white text-neutral-800 dark:border-neutral-800  dark:bg-neutral-950 dark:text-neutral-50 laptop-sm:col-span-2 laptop-lg:col-span-3 laptop-lg:col-start-2 laptop-lg:row-start-2">
+		<div className=" rounded-md border border-neutral-200 bg-white text-neutral-800 dark:border-neutral-800  dark:bg-neutral-950 dark:text-neutral-50 laptop-sm:col-span-2 laptop-lg:col-span-3 laptop-lg:col-start-2 laptop-lg:row-start-2 laptop-sm:overflow-hidden">
 			<div className="">
-				<div className="flex grid-cols-4 justify-between gap-2 border-b p-5 py-2 font-semibold dark:border-neutral-800 laptop-sm:grid ">
-					<span className="truncate">Top Users</span>
+				<div className="flex grid-cols-4 justify-between gap-2 border-b p-4 font-semibold dark:border-neutral-800 laptop-sm:grid">
+					<span className="truncate ">Top Users</span>
 					<span className="hidden truncate laptop-sm:block">Email</span>
 					<span className="hidden truncate laptop-sm:block">Phone Number</span>
-
-					<div className="flex justify-between ">
+					<div className="flex items-center justify-between">
 						<span className="hidden laptop-sm:block">Status</span>
-						<Link href={"/customers"}>
-							<button className="text-blue-700">Show All</button>
+						<Link href="/customers">
+							<button className="text-blue-700 hover:underline focus:outline-none">Show All</button>
 						</Link>
 					</div>
 				</div>
+
 				{people.map((user, index) => (
 					<User
 						key={index}
