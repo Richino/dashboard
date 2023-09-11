@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Messages from "./messages";
+import Messages from "../../messages/message";
 
 let messages = [
 	{
@@ -55,7 +55,16 @@ export default function Message() {
 			</div>
 
 			{messages.map((user, index) => (
-				<Messages fullName={user.fullName} message={user.message} timeSent={user.timeSent} unread={user.unread} avatar={user.avatar} key={index} index={index} status={user.status} />
+				<Messages
+					fullName={user.fullName}
+					message={user.message}
+					timeSent={user.timeSent}
+					unread={user.unread}
+					avatar={user.avatar}
+					key={index}
+					index={index}
+					status={user.status}
+				/>
 			))}
 		</div>
 	);

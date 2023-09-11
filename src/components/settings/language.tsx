@@ -44,10 +44,10 @@ export default function Language() {
 				<BiChevronLeft size={26} />
 				<span className="text-xl font-medium">Language</span>
 			</button>
-			{languages.map((key, indx) => (
-				<div className={`laptop-sm:border border-neutral-200 flex justify-between rounded p-5 hover:cursor-pointer dark:border-neutral-800 max-h-[60px]`} onClick={() => setIndex(indx)}>
+			{languages.map((key, i) => (
+				<div className={`laptop-sm:border border-neutral-200 flex justify-between rounded p-5 hover:cursor-pointer dark:border-neutral-800 max-h-[60px]`} onClick={() => setIndex(i)}>
 					<span>{key}</span>
-					<IoCheckmarkOutline size={26} className={`text-blue-700 ${indx === index ? "block" : "hidden"}`} />
+					<IoCheckmarkOutline size={26} className={`text-blue-700 ${i === index ? "block" : "hidden"}`} />
 				</div>
 			))}
 		</div>

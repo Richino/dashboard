@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { open, close } from "@/redux/messages";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { open} from "@/redux/messages";
+import { useDispatch } from "react-redux";
 
 export default function Messages(props: any) {
 	const dispatch = useDispatch();

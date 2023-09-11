@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	darkMode: ["class", '[data-mode="dark"]'],
+	reactStrictMode: true,
 	images: {
 		domains: ["example.com", "example-cdn.com"],
 	},
