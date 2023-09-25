@@ -15,36 +15,43 @@ type PathToIndex = {
 	[key: string]: number;
 };
 
+type Links = {
+	href: string;
+	text: string;
+};
+
+const links: Links[] = [
+	{ href: "/", text: "Dashboard" },
+	{ href: "/orders", text: "Orders" },
+	{ href: "/inventory", text: "Inventory" },
+	{ href: "/messages", text: "Messages" },
+	{ href: "/team", text: "Team" },
+	{ href: "/customers", text: "Customers" },
+	{ href: "/reminders", text: "Reminders" },
+	{ href: "/board", text: "Board" },
+	{ href: "/settings", text: "Settings" },
+];
+
+const pathToIndex: PathToIndex = {
+	"/": 1,
+	"/orders": 2,
+	"/inventory": 3,
+	"/messages": 4,
+	"/team": 5,
+	"/customers": 6,
+	"/reminders": 7,
+	"/board": 8,
+};
+
 export default function SideNav() {
 	const pathname = usePathname();
-	const [links, setLinks] = useState([
-		{ href: "/", text: "Dashboard" },
-		{ href: "/orders", text: "Orders" },
-		{ href: "/inventory", text: "Inventory" },
-		{ href: "/messages", text: "Messages" },
-		{ href: "/team", text: "Team" },
-		{ href: "/customers", text: "Customers" },
-		{ href: "/reminders", text: "Reminders" },
-		{ href: "/board", text: "Board" },
-		{ href: "/settings", text: "Settings" },
-	]);
+
 	const [width, setWidth] = useState<number | null>(null);
 	const [index, setIndex] = useState(-1);
 	const open = useSelector((state: RootState) => state.navbar.value.open);
 	const dispatch = useDispatch();
 	nprogress.configure({ showSpinner: false });
 	useEffect(() => {
-		const pathToIndex: PathToIndex = {
-			"/": 1,
-			"/orders": 2,
-			"/inventory": 3,
-			"/messages": 4,
-			"/team": 5,
-			"/customers": 6,
-			"/reminders": 7,
-			"/board": 8,
-		};
-
 		setIndex(pathToIndex[pathname] || 9);
 		const handleResize = () => typeof window !== "undefined" && setWidth(window.innerWidth);
 		typeof window !== "undefined" && setWidth(window.innerWidth);
@@ -52,10 +59,10 @@ export default function SideNav() {
 		return () => window.removeEventListener("resize", handleResize);
 	}, [width]);
 
-	function changeTabs(i: number) {
-		if (i !== index) nprogress.start();
+	function changeTabs(number: number) {
+		if (number !== index) nprogress.start();
 		dispatch(close());
-		setIndex(i);
+		setIndex(number);
 	}
 	return (
 		<div
