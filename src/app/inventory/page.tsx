@@ -1,13 +1,11 @@
 "use client";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
-import nprogress, { set } from "nprogress";
-import { useEffect, useRef, useState } from "react";
-import { BsFilter, BsPlus, BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
-import { BiChevronLeft, BiFilter, BiFilterAlt } from "react-icons/bi";
-import { IoCloseSharp, IoFilter } from "react-icons/io5";
-import { IoIosImages } from "react-icons/io";
-import axios from "axios";
+import nprogress from "nprogress";
+import { useEffect,  useState } from "react";
+import {  BsPlus,  } from "react-icons/bs";
+import { BiFilterAlt } from "react-icons/bi";
+import { IoFilter } from "react-icons/io5";
+
 import Add from "@/components/inventory/add";
 import List from "@/components/inventory/list";
 const data = [

@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import { BsThreeDots, BsChevronLeft, BsChevronRight } from "react-icons/bs";
+
 
 export default function Navigation() {
 	const path = usePathname();

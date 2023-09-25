@@ -28,7 +28,7 @@ type ScheduleDay = {
 
 type Task = TaskWithPosition | TaskWithoutPosition;
 interface TaskColor {
-	[key: string]: [string, string]; // Array with two elements: text color and background color
+	[key: string]: [string, string]; 
 }
 const time = ["09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"];
 const taskColors: TaskColor = {
@@ -52,7 +52,7 @@ const schedule = [
 		day: "Sunday",
 		tasks: [],
 	},
-	// Day 1 (Monday)
+
 	{
 		day: "Monday",
 		tasks: [
@@ -67,7 +67,6 @@ const schedule = [
 		],
 	},
 
-	// Day 2 (Tuesday)
 	{
 		day: "Tuesday",
 		tasks: [
@@ -81,7 +80,6 @@ const schedule = [
 		],
 	},
 
-	// Day 3 (Wednesday)
 	{
 		day: "Wednesday",
 		tasks: [
@@ -95,7 +93,6 @@ const schedule = [
 		],
 	},
 
-	// Day 4 (Thursday)
 	{
 		day: "Thursday",
 		tasks: [
@@ -109,7 +106,7 @@ const schedule = [
 		],
 	},
 
-	// Day 5 (Friday)
+
 	{
 		day: "Friday",
 		tasks: [
@@ -192,9 +189,9 @@ const timeSlots = [
 	"06:00 PM",
 ];
 
-// Get the day, month, and year components from the Date object
+
 const dayz = today.getDate();
-const month = today.getMonth() + 1; // Months are zero-indexed, so we add 1 to get the correct month
+const month = today.getMonth() + 1; 
 const year = today.getFullYear();
 
 export default function Page() {

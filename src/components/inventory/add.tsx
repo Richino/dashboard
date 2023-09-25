@@ -114,8 +114,8 @@ export default function Add({ close }: Props) {
 		const lineCount = textarea.value.split("\n").length;
 		console.log(lineCount);
 
-		textarea.rows = lineCount; // Adjust the rows based on the line count
-		setDescription(textarea.value); // Update the description state
+		textarea.rows = lineCount; 
+		setDescription(textarea.value); 
 	};
 
 	const handlePlatformClick = (platform: string) => {

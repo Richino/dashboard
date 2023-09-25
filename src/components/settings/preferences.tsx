@@ -1,8 +1,6 @@
 "use client";
-import { changeSettings } from "@/redux/settings";
 import { useTheme } from "next-themes";
 import { BiChevronLeft } from "react-icons/bi";
-import messages from "../dashboard/messages";
 import { useDispatch } from "react-redux";
 import { close } from "@/redux/settings";
 export default function Preference() {

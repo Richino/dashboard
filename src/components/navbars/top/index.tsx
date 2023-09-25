@@ -1,5 +1,5 @@
 "use client";
-import { BsSearch, BsBell, BsChevronDown } from "react-icons/bs";
+import { BsSearch, BsBell } from "react-icons/bs";
 import { usePathname } from "next/navigation";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Image from "next/image";
@@ -13,7 +13,6 @@ export default function TopNav() {
 	const dispatch = useDispatch();
 	const pathname = usePathname();
 	const [width, setWidth] = useState<number | null>(null);
-	const [font, setFont] = useState(0);
 	const isOpen = useSelector((state: RootState) => state.navbar.value.open);
 	useEffect(() => {
 		const handleResize = () => {

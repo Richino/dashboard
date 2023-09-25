@@ -5,7 +5,6 @@ import { close, changeSettings } from "@/redux/settings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-//chat notification reminder alert
 export default function Notification() {
 	const { sounds, alerts, messages, reminders } = useSelector((state: RootState) => state.settings.value.notifications);
 	const dispatch = useDispatch();

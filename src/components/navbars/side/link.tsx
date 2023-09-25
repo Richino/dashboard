@@ -1,4 +1,4 @@
-import { FC, ReactNode, SVGProps } from "react";
+import { FC} from "react";
 import Link from "next/link";
 import { IoClipboardOutline, IoMailOutline, IoSettingsOutline } from "react-icons/io5";
 import { BsBoxSeam, BsCpu, BsBarChart, BsPeople, BsCalendar2Check } from "react-icons/bs";

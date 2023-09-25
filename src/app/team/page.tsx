@@ -2,9 +2,8 @@
 import { usePathname } from "next/navigation";
 import nprogress from "nprogress";
 import { useEffect } from "react";
-import { BsFilter, BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
-import Image from "next/image";
-import { BiEdit } from "react-icons/bi";
+import { BsFilter, BsThreeDots } from "react-icons/bs";
+import Image from "next/image";;
 const data = [
 	{
 		fullName: "John Doe",
