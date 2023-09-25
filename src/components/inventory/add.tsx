@@ -158,7 +158,7 @@ export default function Add({ close }: Props) {
 							value={title}
 							onChange={handleTitleChange}
 						/>
-						{dropdown && (
+						{/*dropdown && (
 							<div
 								ref={userDropdownRef}
 								className="absolute left-0 top-[72px] z-10 w-full rounded-md border bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900 ">
@@ -184,9 +184,9 @@ export default function Add({ close }: Props) {
 									);
 								})}
 							</div>
-						)}
+                     )*/}
 					</div>
-					<div className="relative">
+					{/*<div className="relative">
 						<div className="flex items-center justify-between rounded-md border p-5 hover:cursor-pointer dark:border-neutral-800" onClick={() => setDropdown2(true)}>
 							<div>{!selected ? "Select Platform" : platforms[0]}</div>
 							<BsChevronDown />
@@ -206,12 +206,12 @@ export default function Add({ close }: Props) {
 								))}
 							</div>
 						)}
-					</div>
+                        </div>*/}
 					<div className="flex w-full  items-center border-neutral-100  px-5 laptop-sm:px-0">
 						<input type="text" placeholder="Price" className="w-full rounded-md border p-5 outline-none dark:border-neutral-800 dark:bg-neutral-900" />
 					</div>
 					<div className="flex w-full  items-center border-neutral-100  px-5 laptop-sm:px-0">
-						<input type="text" placeholder="Discount" className="w-full rounded-md border p-5 outline-none dark:border-neutral-800 dark:bg-neutral-900" />
+						<input type="text" placeholder="Upc" className="w-full rounded-md border p-5 outline-none dark:border-neutral-800 dark:bg-neutral-900" />
 					</div>
 					<div className="flex   w-full border-neutral-100  px-5 laptop-sm:px-0">
 						<textarea
@@ -221,7 +221,7 @@ export default function Add({ close }: Props) {
 							onChange={handleTextareaChange}
 						/>
 					</div>
-					<div className="flex w-full items-center gap-5 border-neutral-100  px-5 laptop-sm:px-0">
+					{/*<div className="flex w-full items-center gap-5 border-neutral-100  px-5 laptop-sm:px-0">
 						<input
 							value={listText}
 							onChange={handleItemChange}
@@ -234,7 +234,7 @@ export default function Add({ close }: Props) {
 							className=" h-[62px] w-full grow-0  rounded-md  bg-blue-700 p-5 px-5  py-3 text-white transition-colors hover:bg-blue-800 laptop-sm:m-0 laptop-sm:w-36 laptop-sm:px-2">
 							Add Item
 						</button>
-					</div>
+                     </div>}*/}
 					{list.length > 0 && (
 						<div className="flex w-full flex-col items-center  overflow-hidden  rounded-md border border-neutral-100 px-5 dark:border-neutral-800 dark:bg-neutral-900 laptop-sm:px-0">
 							{list.map((item, index) => {
@@ -261,9 +261,11 @@ export default function Add({ close }: Props) {
 							{gotImage && <Image alt="preview image" fill src={imagePreview as string} style={{ objectFit: "contain" }} />}
 						</div>
 					</div>
-					<button className=" w-full grow-0   rounded-md  bg-blue-700 p-5 px-5  py-3 text-white transition-colors hover:bg-blue-800 laptop-sm:m-0 laptop-sm:w-36 laptop-sm:px-2">
-						Add Item
-					</button>
+					<div className="px-5 laptop-sm:px-0">
+						<button className=" w-full grow-0   rounded-md  bg-blue-700 p-5 px-5  py-3 text-white transition-colors hover:bg-blue-800 laptop-sm:m-0 laptop-sm:w-36 laptop-sm:px-2">
+							Add Item
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
