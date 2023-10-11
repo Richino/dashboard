@@ -87,8 +87,8 @@ export default function Page() {
 			<div className="border-b border-dashed bg-white p-5 dark:border-neutral-800 dark:bg-neutral-950 laptop-sm:dark:bg-neutral-950">
 				<div className="text-2xl font-semibold">Orders</div>
 			</div>
-			<div className="h-auto rounded-md laptop-sm:h-[calc(100%-(55px+79px))] laptop-sm:overflow-y-auto laptop-sm:bg-white laptop-sm:dark:bg-neutral-950">
-				<div className="grid grid-cols-5 gap-5 p-5 font-semibold dark:border-neutral-800 laptop-sm:sticky laptop-sm:top-0 laptop-sm:grid laptop-sm:border-b laptop-sm:bg-white laptop-sm:dark:bg-neutral-950">
+			<div className="flex h-full w-full flex-col  overflow-y-auto border-neutral-200    dark:bg-neutral-950 laptop-sm:h-[calc(100%-(55px+79px))] laptop-sm:gap-0 laptop-sm:overflow-y-auto laptop-sm:bg-white laptop-sm:pb-0">
+				<div className="laptop-sm:grid grid-cols-5 gap-5 p-5 font-semibold dark:border-neutral-800 laptop-sm:sticky laptop-sm:top-0  laptop-sm:border-b laptop-sm:bg-white laptop-sm:dark:bg-neutral-950 hidden">
 					<span className="flex gap-3 truncate">Order ID</span>
 					<span className="truncate">Email</span>
 					<span className="truncate">Location</span>

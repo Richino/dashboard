@@ -28,11 +28,11 @@ export default function Message() {
 		return () => window.removeEventListener("resize", handleResize);
 	}, [width]);
 	return (
-		<main className="relative flex h-screen w-full gap-5  text-neutral-800 laptop-sm:h-[calc(100%-55px)] laptop-sm:gap-0 laptop-sm:px-[200px] laptop-sm:py-5 ">
+		<main className="relative flex h-[100svh] w-full gap-5  text-neutral-800 laptop-sm:h-[calc(100%-55px)] laptop-sm:gap-0 laptop-sm:px-5 laptop-sm:py-5 ">
 			<div className="msg fixed bottom-5  right-5 rounded-full bg-blue-700 p-4  text-white laptop-sm:hidden">
 				<AiFillMessage size={25} />
 			</div>
-			<div className="  h-[calc(100%-55px)]  w-full overflow-y-auto bg-white dark:border-neutral-800 dark:bg-neutral-950 laptop-sm:h-full laptop-sm:w-auto laptop-sm:border laptop-sm:border-r">
+			<div className="   overflow-hidden  w-full overflow-y-auto bg-white dark:border-neutral-800 dark:bg-neutral-950 laptop-sm:h-full laptop-sm:w-auto laptop-sm:border laptop-sm:border-r">
 				<MessageList messages={messages} />
 			</div>
 			<div
